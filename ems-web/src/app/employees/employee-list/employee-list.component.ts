@@ -81,4 +81,11 @@ export class EmployeeListComponent implements OnInit
     this.page = newPage;
     this.loadEmployees();
   }
+
+  onPageSizeChange(event: Event): void
+  {
+    this.pageSize = Number((event.target as HTMLSelectElement).value);
+    this.page = 1;
+    this.loadEmployees();
+  }
 }

@@ -51,26 +51,37 @@
       </table>
     </div>
 
-    @if (totalPages > 1) {
-      <nav class="mt-4">
-        <ul class="flex justify-center gap-1 flex-wrap">
-          <li>
-            <button class="px-3 py-1 rounded border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                    [disabled]="page === 1" (click)="onPageChange(page - 1)">Previous</button>
-          </li>
-          @for (p of [].constructor(totalPages); track $index) {
+    <div class="flex flex-col items-center sm:grid sm:grid-cols-3 mt-4 gap-2">
+      <div class="hidden sm:block"></div>
+      @if (totalPages > 1) {
+        <nav class="flex justify-center">
+          <ul class="flex gap-1 flex-wrap justify-center">
             <li>
-              <button class="px-3 py-1 rounded border text-sm transition-colors"
-                      [class]="page === $index + 1 ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-300 hover:bg-gray-100'"
-                      (click)="onPageChange($index + 1)">{{ $index + 1 }}</button>
+              <button class="px-3 py-1 rounded border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      [disabled]="page === 1" (click)="onPageChange(page - 1)">Previous</button>
             </li>
-          }
-          <li>
-            <button class="px-3 py-1 rounded border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                    [disabled]="page === totalPages" (click)="onPageChange(page + 1)">Next</button>
-          </li>
-        </ul>
-      </nav>
-    }
+            @for (p of [].constructor(totalPages); track $index) {
+              <li>
+                <button class="px-3 py-1 rounded border text-sm transition-colors"
+                        [class]="page === $index + 1 ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-300 hover:bg-gray-100'"
+                        (click)="onPageChange($index + 1)">{{ $index + 1 }}</button>
+              </li>
+            }
+            <li>
+              <button class="px-3 py-1 rounded border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      [disabled]="page === totalPages" (click)="onPageChange(page + 1)">Next</button>
+            </li>
+          </ul>
+        </nav>
+      }
+      <label class="text-sm text-gray-600 flex items-center gap-1 sm:justify-end">
+        Rows per page:
+        <select class="border border-gray-300 rounded px-2 py-1 text-sm" (change)="onPageSizeChange($event)">
+          <option value="5"  [selected]="pageSize === 5">5</option>
+          <option value="10" [selected]="pageSize === 10">10</option>
+          <option value="25" [selected]="pageSize === 25">25</option>
+        </select>
+      </label>
+    </div>
   }
 </div>
