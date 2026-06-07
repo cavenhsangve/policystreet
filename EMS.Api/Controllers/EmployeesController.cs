@@ -24,14 +24,20 @@ public class EmployeesController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var employee = await _service.GetByIdAsync(id);
-        if (employee is null) return NotFound();
+        if (employee is null)
+        {
+            return NotFound();
+        }
         return Ok(employee);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] EmployeeDto dto)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         try
         {
             var employee = await _service.CreateAsync(dto);
@@ -46,11 +52,17 @@ public class EmployeesController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] EmployeeDto dto)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         try
         {
             var employee = await _service.UpdateAsync(id, dto);
-            if (employee is null) return NotFound();
+            if (employee is null)
+            {
+                return NotFound();
+            }
             return Ok(employee);
         }
         catch (DuplicateEmailException ex)
@@ -63,7 +75,10 @@ public class EmployeesController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var deleted = await _service.DeleteAsync(id);
-        if (!deleted) return NotFound();
+        if (!deleted)
+        {
+            return NotFound();
+        }
         return NoContent();
     }
 }

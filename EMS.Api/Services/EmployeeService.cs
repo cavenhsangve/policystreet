@@ -48,7 +48,10 @@ public class EmployeeService : IEmployeeService
     public async Task<Employee?> UpdateAsync(int id, EmployeeDto dto)
     {
         var existing = await _repo.GetByIdAsync(id);
-        if (existing is null) return null;
+        if (existing is null)
+        {
+            return null;
+        }
 
         existing.FirstName = dto.FirstName;
         existing.LastName = dto.LastName;
@@ -66,7 +69,10 @@ public class EmployeeService : IEmployeeService
     public async Task<bool> DeleteAsync(int id)
     {
         var existing = await _repo.GetByIdAsync(id);
-        if (existing is null) return false;
+        if (existing is null)
+        {
+            return false;
+        }
         await _repo.DeleteAsync(id);
         return true;
     }

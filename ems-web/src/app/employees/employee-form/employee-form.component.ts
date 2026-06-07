@@ -12,7 +12,8 @@ import { EmployeeDto } from '../../models/employee.model';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './employee-form.component.html'
 })
-export class EmployeeFormComponent implements OnInit {
+export class EmployeeFormComponent implements OnInit
+{
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -25,40 +26,47 @@ export class EmployeeFormComponent implements OnInit {
   errorMessage: string | null = null;
 
   form = this.fb.group({
-    firstName:  ['', [Validators.required, Validators.maxLength(100)]],
-    lastName:   ['', [Validators.required, Validators.maxLength(100)]],
-    email:      ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
-    phone:      ['', [Validators.maxLength(20), Validators.pattern(/^\+?[\d\s\-().]{7,20}$/)]],
+    firstName: ['', [Validators.required, Validators.maxLength(100)]],
+    lastName: ['', [Validators.required, Validators.maxLength(100)]],
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
+    phone: ['', [Validators.maxLength(20), Validators.pattern(/^\+?[\d\s\-().]{7,20}$/)]],
     department: ['', [Validators.required, Validators.maxLength(100)]],
-    position:   ['', [Validators.required, Validators.maxLength(100)]],
-    salary:     [null as number | null, [Validators.required, Validators.min(0.01)]]
+    position: ['', [Validators.required, Validators.maxLength(100)]],
+    salary: [null as number | null, [Validators.required, Validators.min(0.01)]]
   });
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    if (id)
+    {
       this.isEditMode = true;
       this.employeeId = +id;
       this.loadEmployee(this.employeeId);
     }
   }
 
-  loadEmployee(id: number): void {
+  loadEmployee(id: number): void
+  {
     this.isLoading = true;
     this.employeeService.getById(id).subscribe({
-      next: (emp) => {
+      next: (emp) =>
+      {
         this.form.patchValue(emp);
         this.isLoading = false;
       },
-      error: () => {
+      error: () =>
+      {
         this.errorMessage = 'Failed to load employee.';
         this.isLoading = false;
       }
     });
   }
 
-  onSubmit(): void {
-    if (this.form.invalid) {
+  onSubmit(): void
+  {
+    if (this.form.invalid)
+    {
       this.form.markAllAsTouched();
       return;
     }
@@ -73,31 +81,57 @@ export class EmployeeFormComponent implements OnInit {
 
     request$.subscribe({
       next: () => this.router.navigate(['/employees']),
-      error: (err: HttpErrorResponse) => {
+      error: (err: HttpErrorResponse) =>
+      {
         this.isSaving = false;
-        if (err.status === 409) {
+        if (err.status === 409)
+        {
           this.errorMessage = 'An employee with this email already exists.';
-        } else if (err.status === 400) {
+        }
+        else if (err.status === 400)
+        {
           this.errorMessage = 'Please fix the validation errors and try again.';
-        } else {
+        }
+        else
+        {
           this.errorMessage = 'An unexpected error occurred. Please try again.';
         }
       }
     });
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.router.navigate(['/employees']);
   }
 
-  getError(field: string): string | null {
+  getError(field: string): string | null
+  {
     const control = this.form.get(field);
-    if (!control || !control.invalid || !control.touched) return null;
-    if (control.hasError('required')) return `${field} is required.`;
-    if (control.hasError('email')) return 'Invalid email format.';
-    if (control.hasError('pattern')) return 'Invalid phone format.';
-    if (control.hasError('maxlength')) return 'Value is too long.';
-    if (control.hasError('min')) return 'Salary must be greater than 0.';
+    if (!control || !control.invalid || !control.touched)
+    {
+      return null;
+    }
+    if (control.hasError('required'))
+    {
+      return `${field} is required.`;
+    }
+    if (control.hasError('email'))
+    {
+      return 'Invalid email format.';
+    }
+    if (control.hasError('pattern'))
+    {
+      return 'Invalid phone format.';
+    }
+    if (control.hasError('maxlength'))
+    {
+      return 'Value is too long.';
+    }
+    if (control.hasError('min'))
+    {
+      return 'Salary must be greater than 0.';
+    }
     return null;
   }
 }
