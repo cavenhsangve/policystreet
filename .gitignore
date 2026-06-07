@@ -1,0 +1,38 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.userprefs
+*.DotSettings.user
+launchSettings.json
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+project.assets.json
+
+# Angular
+node_modules/
+dist/
+.angular/
+
+# Environment & secrets
+appsettings.Development.json
+*.env
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Test results
+TestResults/
+coverage/

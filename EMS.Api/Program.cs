@@ -1,3 +1,11 @@
+using System.Data;
+using EMS.Api.Middleware;
+using EMS.Api.Repositories;
+using EMS.Api.Services;
+using Microsoft.Data.SqlClient;
+
+Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
@@ -10,9 +18,11 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader()
               .AllowAnyMethod()));
 
-// TODO: Register your repository and service here, e.g.:
-// builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-// builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IDbConnection>(_ =>
+    new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 var app = builder.Build();
 
@@ -23,6 +33,7 @@ app.UseExceptionHandler(err => err.Run(async ctx =>
     await ctx.Response.WriteAsJsonAsync(new { title = "An unexpected error occurred.", status = 500 });
 }));
 
+app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseCors("AllowAngular");
 app.UseAuthorization();
 app.MapControllers();
