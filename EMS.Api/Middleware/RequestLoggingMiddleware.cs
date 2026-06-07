@@ -17,10 +17,18 @@ public class RequestLoggingMiddleware
         var requestBody = await new StreamReader(context.Request.Body).ReadToEndAsync();
         context.Request.Body.Position = 0;
 
-        _logger.LogInformation("Request: {Method} {Path} | Body: {Body}",
+        var endpoint = context.GetEndpoint();
+        var action = endpoint?.Metadata.GetMetadata<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>();
+        var controller = action?.ControllerName ?? "Unknown";
+        var actionName = action?.ActionName ?? "Unknown";
+
+        _logger.LogInformation(
+            "[{Controller}/{Action}] Request: {Method} {Path} | Body: {Body}",
+            controller,
+            actionName,
             context.Request.Method,
             context.Request.Path,
-            requestBody);
+            string.IsNullOrWhiteSpace(requestBody) ? "(empty)" : requestBody);
 
         var originalBody = context.Response.Body;
         using var memStream = new MemoryStream();
@@ -32,9 +40,13 @@ public class RequestLoggingMiddleware
         var responseBody = await new StreamReader(memStream).ReadToEndAsync();
         memStream.Position = 0;
 
-        _logger.LogInformation("Response: {StatusCode} | Body: {Body}",
+        _logger.LogInformation(
+            "[{Controller}/{Action}] Response: {StatusCode} | Body: {Body}{NewLine}",
+            controller,
+            actionName,
             context.Response.StatusCode,
-            responseBody);
+            string.IsNullOrWhiteSpace(responseBody) ? "(empty)" : responseBody,
+            Environment.NewLine);
 
         await memStream.CopyToAsync(originalBody);
         context.Response.Body = originalBody;

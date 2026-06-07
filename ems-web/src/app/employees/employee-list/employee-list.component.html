@@ -1,0 +1,76 @@
+<div class="px-4 md:px-6 mt-6">
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+    <h2 class="font-bold text-xl">Employees List</h2>
+    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded transition-colors" (click)="onAdd()">
+      Add Employee
+    </button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{{ errorMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <div class="flex justify-center my-8">
+      <div class="animate-spin h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+    </div>
+  }
+
+  @if (!isLoading) {
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse text-sm">
+        <thead>
+          <tr class="bg-gray-800 text-white">
+            <th class="text-left px-4 py-3 font-semibold">Name</th>
+            <th class="text-left px-4 py-3 font-semibold">Email</th>
+            <th class="text-left px-4 py-3 font-semibold">Department</th>
+            <th class="text-left px-4 py-3 font-semibold">Position</th>
+            <th class="text-left px-4 py-3 font-semibold">Salary</th>
+            <th class="text-left px-4 py-3 font-semibold">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (emp of employees; track emp.id) {
+            <tr class="border-b border-gray-200 hover:bg-gray-50">
+              <td class="px-4 py-3">{{ emp.firstName }} {{ emp.lastName }}</td>
+              <td class="px-4 py-3">{{ emp.email }}</td>
+              <td class="px-4 py-3">{{ emp.department }}</td>
+              <td class="px-4 py-3">{{ emp.position }}</td>
+              <td class="px-4 py-3">{{ emp.salary | number:'1.2-2' }}</td>
+              <td class="px-4 py-3 whitespace-nowrap">
+                <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium px-3 py-1 rounded text-sm mr-1 transition-colors" (click)="onEdit(emp.id)">Edit</button>
+                <button class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-1 rounded text-sm transition-colors" (click)="onDelete(emp.id)">Delete</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="text-center text-gray-500 py-8">No employees found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (totalPages > 1) {
+      <nav class="mt-4">
+        <ul class="flex justify-center gap-1 flex-wrap">
+          <li>
+            <button class="px-3 py-1 rounded border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                    [disabled]="page === 1" (click)="onPageChange(page - 1)">Previous</button>
+          </li>
+          @for (p of [].constructor(totalPages); track $index) {
+            <li>
+              <button class="px-3 py-1 rounded border text-sm transition-colors"
+                      [class]="page === $index + 1 ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-300 hover:bg-gray-100'"
+                      (click)="onPageChange($index + 1)">{{ $index + 1 }}</button>
+            </li>
+          }
+          <li>
+            <button class="px-3 py-1 rounded border border-gray-300 text-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                    [disabled]="page === totalPages" (click)="onPageChange(page + 1)">Next</button>
+          </li>
+        </ul>
+      </nav>
+    }
+  }
+</div>

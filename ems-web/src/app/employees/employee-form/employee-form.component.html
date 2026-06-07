@@ -1,0 +1,119 @@
+<div class="px-4 md:px-6 mt-6">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="font-bold text-xl mb-6">{{ isEditMode ? 'Edit Employee' : 'Add Employee' }}</h2>
+
+    @if (errorMessage) {
+      <div class="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{{ errorMessage }}</div>
+    }
+
+    @if (isLoading) {
+      <div class="flex justify-center my-8">
+        <div class="animate-spin h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+      </div>
+    }
+
+    @if (!isLoading) {
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+            <input formControlName="firstName"
+              class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [class.border-red-500]="getError('firstName')"
+              [class.border-gray-300]="!getError('firstName')">
+            @if (getError('firstName')) {
+              <div class="text-red-500 text-xs mt-1">{{ getError('firstName') }}</div>
+            }
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+            <input formControlName="lastName"
+              class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [class.border-red-500]="getError('lastName')"
+              [class.border-gray-300]="!getError('lastName')">
+            @if (getError('lastName')) {
+              <div class="text-red-500 text-xs mt-1">{{ getError('lastName') }}</div>
+            }
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input formControlName="email" type="email"
+              class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [class.border-red-500]="getError('email')"
+              [class.border-gray-300]="!getError('email')">
+            @if (getError('email')) {
+              <div class="text-red-500 text-xs mt-1">{{ getError('email') }}</div>
+            }
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Phone <span class="text-gray-400 font-normal">(optional)</span>
+            </label>
+            <input formControlName="phone"
+              class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [class.border-red-500]="getError('phone')"
+              [class.border-gray-300]="!getError('phone')">
+            @if (getError('phone')) {
+              <div class="text-red-500 text-xs mt-1">{{ getError('phone') }}</div>
+            }
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+            <input formControlName="department"
+              class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [class.border-red-500]="getError('department')"
+              [class.border-gray-300]="!getError('department')">
+            @if (getError('department')) {
+              <div class="text-red-500 text-xs mt-1">{{ getError('department') }}</div>
+            }
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Position</label>
+            <input formControlName="position"
+              class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [class.border-red-500]="getError('position')"
+              [class.border-gray-300]="!getError('position')">
+            @if (getError('position')) {
+              <div class="text-red-500 text-xs mt-1">{{ getError('position') }}</div>
+            }
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Salary</label>
+          <input formControlName="salary" type="number"
+            class="w-full md:w-1/2 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [class.border-red-500]="getError('salary')"
+            [class.border-gray-300]="!getError('salary')">
+          @if (getError('salary')) {
+            <div class="text-red-500 text-xs mt-1">{{ getError('salary') }}</div>
+          }
+        </div>
+
+        <div class="flex gap-3">
+          <button type="submit"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            [disabled]="isSaving">
+            {{ isSaving ? 'Saving...' : (isEditMode ? 'Update' : 'Save') }}
+          </button>
+          <button type="button"
+            class="bg-gray-500 hover:bg-gray-600 text-white font-medium px-5 py-2 rounded transition-colors"
+            (click)="onCancel()">
+            Cancel
+          </button>
+        </div>
+
+      </form>
+    }
+  </div>
+</div>
