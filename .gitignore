@@ -20,9 +20,11 @@ dist/
 .angular/
 
 # Environment & secrets
-appsettings.Development.json
 *.env
 .env
+
+# IDE
+.vscode/
 
 # OS
 .DS_Store
