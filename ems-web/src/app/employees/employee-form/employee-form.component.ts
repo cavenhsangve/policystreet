@@ -73,7 +73,7 @@ export class EmployeeFormComponent implements OnInit
 
     this.isSaving = true;
     this.errorMessage = null;
-    const dto = this.form.value as EmployeeDto;
+    const dto = this.form.getRawValue() as EmployeeDto;
 
     const request$ = this.isEditMode && this.employeeId
       ? this.employeeService.update(this.employeeId, dto)

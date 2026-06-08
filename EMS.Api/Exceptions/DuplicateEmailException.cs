@@ -1,7 +1,6 @@
-﻿namespace EMS.Api.Exceptions
+﻿namespace EMS.Api.Exceptions;
+
+public class DuplicateEmailException : Exception
 {
-    public class DuplicateEmailException : Exception
-    {
-        public DuplicateEmailException() : base("An employee with this email already exists.") { }
-    }
+    public DuplicateEmailException() : base("An employee with this email already exists.") { }
 }

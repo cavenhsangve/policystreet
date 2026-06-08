@@ -1,22 +1,27 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { EmployeeService, PagedResult } from '../../core/services/employee.service';
 import { Employee } from '../../models/employee.model';
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './employee-list.component.html'
 })
-export class EmployeeListComponent implements OnInit
+export class EmployeeListComponent implements OnInit, OnDestroy
 {
   private employeeService = inject(EmployeeService);
   private router = inject(Router);
+  private loadSub?: Subscription;
+  private deleteSub?: Subscription;
 
   employees: Employee[] = [];
   isLoading = false;
+  deletingId: number | null = null;
   errorMessage: string | null = null;
   page = 1;
   pageSize = 10;
@@ -31,19 +36,21 @@ export class EmployeeListComponent implements OnInit
   {
     this.isLoading = true;
     this.errorMessage = null;
-    this.employeeService.getAll(this.page, this.pageSize).subscribe({
-      next: (result: PagedResult<Employee>) =>
-      {
-        this.employees = result.data;
-        this.total = result.total;
-        this.isLoading = false;
-      },
-      error: () =>
-      {
-        this.errorMessage = 'Failed to load employees. Please try again.';
-        this.isLoading = false;
-      }
-    });
+    this.loadSub?.unsubscribe();
+    this.loadSub = this.employeeService.getAll(this.page, this.pageSize)
+      .subscribe({
+        next: (result: PagedResult<Employee>) =>
+        {
+          this.employees = result.data;
+          this.total = result.total;
+          this.isLoading = false;
+        },
+        error: () =>
+        {
+          this.errorMessage = 'Failed to load employees. Please try again.';
+          this.isLoading = false;
+        }
+      });
   }
 
   onAdd(): void
@@ -62,18 +69,36 @@ export class EmployeeListComponent implements OnInit
     {
       return;
     }
-    this.employeeService.delete(id).subscribe({
-      next: () => this.loadEmployees(),
-      error: () =>
-      {
-        this.errorMessage = 'Failed to delete employee. Please try again.';
-      }
-    });
+    this.deletingId = id;
+    this.deleteSub = this.employeeService.delete(id)
+      .subscribe({
+        next: () =>
+        {
+          this.deletingId = null;
+          this.loadEmployees();
+        },
+        error: () =>
+        {
+          this.deletingId = null;
+          this.errorMessage = 'Failed to delete employee. Please try again.';
+        }
+      });
+  }
+
+  ngOnDestroy(): void
+  {
+    this.loadSub?.unsubscribe();
+    this.deleteSub?.unsubscribe();
   }
 
   get totalPages(): number
   {
     return Math.ceil(this.total / this.pageSize);
+  }
+
+  get pageNumbers(): number[]
+  {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   onPageChange(newPage: number): void

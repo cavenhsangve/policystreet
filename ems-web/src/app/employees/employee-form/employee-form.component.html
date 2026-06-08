@@ -17,86 +17,93 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
+            @let firstNameError = getError('firstName');
             <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
             <input formControlName="firstName"
               class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              [class.border-red-500]="getError('firstName')"
-              [class.border-gray-300]="!getError('firstName')">
-            @if (getError('firstName')) {
-              <div class="text-red-500 text-xs mt-1">{{ getError('firstName') }}</div>
+              [class.border-red-500]="firstNameError"
+              [class.border-gray-300]="!firstNameError">
+            @if (firstNameError) {
+              <div class="text-red-500 text-xs mt-1">{{ firstNameError }}</div>
             }
           </div>
 
           <div>
+            @let lastNameError = getError('lastName');
             <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
             <input formControlName="lastName"
               class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              [class.border-red-500]="getError('lastName')"
-              [class.border-gray-300]="!getError('lastName')">
-            @if (getError('lastName')) {
-              <div class="text-red-500 text-xs mt-1">{{ getError('lastName') }}</div>
+              [class.border-red-500]="lastNameError"
+              [class.border-gray-300]="!lastNameError">
+            @if (lastNameError) {
+              <div class="text-red-500 text-xs mt-1">{{ lastNameError }}</div>
             }
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
+            @let emailError = getError('email');
             <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input formControlName="email" type="email"
               class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              [class.border-red-500]="getError('email')"
-              [class.border-gray-300]="!getError('email')">
-            @if (getError('email')) {
-              <div class="text-red-500 text-xs mt-1">{{ getError('email') }}</div>
+              [class.border-red-500]="emailError"
+              [class.border-gray-300]="!emailError">
+            @if (emailError) {
+              <div class="text-red-500 text-xs mt-1">{{ emailError }}</div>
             }
           </div>
 
           <div>
+            @let phoneError = getError('phone');
             <label class="block text-sm font-medium text-gray-700 mb-1">
               Phone <span class="text-gray-400 font-normal">(optional)</span>
             </label>
             <input formControlName="phone"
               class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              [class.border-red-500]="getError('phone')"
-              [class.border-gray-300]="!getError('phone')">
-            @if (getError('phone')) {
-              <div class="text-red-500 text-xs mt-1">{{ getError('phone') }}</div>
+              [class.border-red-500]="phoneError"
+              [class.border-gray-300]="!phoneError">
+            @if (phoneError) {
+              <div class="text-red-500 text-xs mt-1">{{ phoneError }}</div>
             }
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
+            @let departmentError = getError('department');
             <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
             <input formControlName="department"
               class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              [class.border-red-500]="getError('department')"
-              [class.border-gray-300]="!getError('department')">
-            @if (getError('department')) {
-              <div class="text-red-500 text-xs mt-1">{{ getError('department') }}</div>
+              [class.border-red-500]="departmentError"
+              [class.border-gray-300]="!departmentError">
+            @if (departmentError) {
+              <div class="text-red-500 text-xs mt-1">{{ departmentError }}</div>
             }
           </div>
 
           <div>
+            @let positionError = getError('position');
             <label class="block text-sm font-medium text-gray-700 mb-1">Position</label>
             <input formControlName="position"
               class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              [class.border-red-500]="getError('position')"
-              [class.border-gray-300]="!getError('position')">
-            @if (getError('position')) {
-              <div class="text-red-500 text-xs mt-1">{{ getError('position') }}</div>
+              [class.border-red-500]="positionError"
+              [class.border-gray-300]="!positionError">
+            @if (positionError) {
+              <div class="text-red-500 text-xs mt-1">{{ positionError }}</div>
             }
           </div>
         </div>
 
         <div class="mb-6">
+          @let salaryError = getError('salary');
           <label class="block text-sm font-medium text-gray-700 mb-1">Salary</label>
           <input formControlName="salary" type="number"
             class="w-full md:w-1/2 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            [class.border-red-500]="getError('salary')"
-            [class.border-gray-300]="!getError('salary')">
-          @if (getError('salary')) {
-            <div class="text-red-500 text-xs mt-1">{{ getError('salary') }}</div>
+            [class.border-red-500]="salaryError"
+            [class.border-gray-300]="!salaryError">
+          @if (salaryError) {
+            <div class="text-red-500 text-xs mt-1">{{ salaryError }}</div>
           }
         </div>
 

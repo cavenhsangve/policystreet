@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Employee, EmployeeDto } from '../../models/employee.model';
 
@@ -20,31 +20,26 @@ export class EmployeeService
 
   getAll(page = 1, pageSize = 10): Observable<PagedResult<Employee>>
   {
-    return this.http.get<PagedResult<Employee>>(`${this.apiUrl}?page=${page}&pageSize=${pageSize}`)
-      .pipe(catchError(err => throwError(() => err)));
+    return this.http.get<PagedResult<Employee>>(`${this.apiUrl}?page=${page}&pageSize=${pageSize}`);
   }
 
   getById(id: number): Observable<Employee>
   {
-    return this.http.get<Employee>(`${this.apiUrl}/${id}`)
-      .pipe(catchError(err => throwError(() => err)));
+    return this.http.get<Employee>(`${this.apiUrl}/${id}`);
   }
 
   create(dto: EmployeeDto): Observable<Employee>
   {
-    return this.http.post<Employee>(this.apiUrl, dto)
-      .pipe(catchError(err => throwError(() => err)));
+    return this.http.post<Employee>(this.apiUrl, dto);
   }
 
   update(id: number, dto: EmployeeDto): Observable<Employee>
   {
-    return this.http.put<Employee>(`${this.apiUrl}/${id}`, dto)
-      .pipe(catchError(err => throwError(() => err)));
+    return this.http.put<Employee>(`${this.apiUrl}/${id}`, dto);
   }
 
   delete(id: number): Observable<void>
   {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`)
-      .pipe(catchError(err => throwError(() => err)));
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

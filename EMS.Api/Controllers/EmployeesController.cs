@@ -16,6 +16,9 @@ public class EmployeesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
+        if (pageSize > 100) pageSize = 100;
         var result = await _service.GetAllAsync(page, pageSize);
         return Ok(result);
     }
